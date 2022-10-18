@@ -2,49 +2,35 @@
 using Microsoft.EntityFrameworkCore;
 using Stall.DataAccess.Context;
 using Stall.DataAccess.Model;
+using Stall.DataAccess.Repositories;
 
 using (var context = new StallContext())
 {
-    var banana = new Product { Name = "Banana" };
+    var list = context.Sales.Include(x => x.Product).ToList();
+
+    var banana = new Product { Id = 5 };
     var orange = new Product { Name = "Orange" };
 
-    var bananaEntry = context.Products.Add(banana);
-    var orangeEntry = context.Products.Add(orange);
+    var productRepository = new ProductRepository(context);
+
+    banana = productRepository.Get(5);
+
+    context.Sales.Add(new Sale { Date = DateTime.Now, Price = 5, Count = 1, Product = banana });
 
     context.SaveChanges();
 
-    banana = bananaEntry.Entity;
-    orange = orangeEntry.Entity;
+    productRepository.Delete(3);
 
-    var bananaSale = new Sale
+    productRepository.Add(banana);
+    productRepository.Add(orange);
+
+
+    foreach (var item in productRepository.Get())
     {
-        Date = DateTime.Now,
-        ProductId = banana.Id,
-        Count = 10,
-        Price = 5,
-    };
-
-    var orangeSale = new Sale
-    {
-        Date = DateTime.Now,
-        ProductId = orange.Id,
-        Count = 10,
-        Price = 5,
-    };
-
-    context.Sales.Add(bananaSale);
-    context.Sales.Add(orangeSale);
-
-    context.SaveChanges();
-
-    var query = context.Sales.Select(x => x);
-
-    query = query.Include(x => x.Product);
-
-    var collection = query.ToList();
-
-    foreach (var item in collection)
-    {
-        Console.WriteLine($"{item.Id} - {item.Date} - {item.Product?.Name} - {item.Price} - {item.Count} - {item.Price * item.Count}");
+        Console.WriteLine($"{item.Id} - {item.Name}");
     }
+
+    var product = productRepository.Get(1);
+    Console.WriteLine($"{product.Id} - {product.Name}");
+
 }
