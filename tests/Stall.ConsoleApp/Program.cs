@@ -3,34 +3,35 @@ using Microsoft.EntityFrameworkCore;
 using Stall.DataAccess.Context;
 using Stall.DataAccess.Model;
 using Stall.DataAccess.Repositories;
+using Stall.DataAccess.UnitOfWork;
 
 using (var context = new StallContext())
 {
-    var list = context.Sales.Include(x => x.Product).ToList();
 
-    var banana = new Product { Id = 5 };
-    var orange = new Product { Name = "Orange" };
+    var unitOfWork = new UnitOfWork(context);
+    var productRepo = new ProductRepository(context);
+    var saleRepo = new SaleRepository(context);
 
-    var productRepository = new ProductRepository(context);
-
-    banana = productRepository.Get(5);
-
-    context.Sales.Add(new Sale { Date = DateTime.Now, Price = 5, Count = 1, Product = banana });
-
-    context.SaveChanges();
-
-    productRepository.Delete(3);
-
-    productRepository.Add(banana);
-    productRepository.Add(orange);
-
-
-    foreach (var item in productRepository.Get())
+    try
     {
-        Console.WriteLine($"{item.Id} - {item.Name}");
+        unitOfWork.BeginTransaction();
+
+        var potatoes = new Product { Name = "Potatoes" };
+
+        productRepo.Add(potatoes);
+
+        //potatoes = null;
+
+        Console.WriteLine(potatoes.Id);
+
+        saleRepo.Add(new Sale { Date = DateTime.Now, Price = 10, Count = 5, Product = potatoes });
+
+        unitOfWork.CommitTransaction();
+    }
+    catch
+    {
+        unitOfWork.RollbackTransaction();
     }
 
-    var product = productRepository.Get(1);
-    Console.WriteLine($"{product.Id} - {product.Name}");
 
 }
