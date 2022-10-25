@@ -1,9 +1,8 @@
 ﻿using Stall.DataAccess.Model;
 
-namespace Stall.DataAccess.Repositories
+namespace Stall.DataAccess.Repositories;
+
+public interface ISaleRepository : IRepository<Sale>
 {
-    public interface ISaleRepository : IRepository<Sale>
-    {
-        ICollection<Sale> GetBy();
-    }
+    
 }
