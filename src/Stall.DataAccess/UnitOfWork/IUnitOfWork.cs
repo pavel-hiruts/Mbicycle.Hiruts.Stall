@@ -1,11 +1,10 @@
-﻿namespace Stall.DataAccess.UnitOfWork
+﻿namespace Stall.DataAccess.UnitOfWork;
+
+public interface IUnitOfWork
 {
-    public interface IUnitOfWork
-    {
-        void BeginTransaction();
+    void BeginTransaction();
 
-        void CommitTransaction();
+    void CommitTransaction();
 
-        void RollbackTransaction();
-    }
+    void RollbackTransaction();
 }

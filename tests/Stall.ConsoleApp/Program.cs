@@ -1,37 +1,31 @@
-﻿
-using Microsoft.EntityFrameworkCore;
-using Stall.DataAccess.Context;
+﻿using Stall.DataAccess.Context;
 using Stall.DataAccess.Model;
 using Stall.DataAccess.Repositories;
 using Stall.DataAccess.UnitOfWork;
 
-using (var context = new StallContext())
+using var context = new StallContext();
+
+var unitOfWork = new UnitOfWork(context);
+var productRepo = new ProductRepository(context);
+var saleRepo = new SaleRepository(context);
+
+try
 {
+    unitOfWork.BeginTransaction();
 
-    var unitOfWork = new UnitOfWork(context);
-    var productRepo = new ProductRepository(context);
-    var saleRepo = new SaleRepository(context);
+    var potatoes = new Product { Name = "Potatoes" };
 
-    try
-    {
-        unitOfWork.BeginTransaction();
+    productRepo.Add(potatoes);
 
-        var potatoes = new Product { Name = "Potatoes" };
+    //potatoes = null;
 
-        productRepo.Add(potatoes);
+    Console.WriteLine(potatoes.Id);
 
-        //potatoes = null;
+    saleRepo.Add(new Sale { Date = DateTime.Now, Price = 10, Count = 5, Product = potatoes });
 
-        Console.WriteLine(potatoes.Id);
-
-        saleRepo.Add(new Sale { Date = DateTime.Now, Price = 10, Count = 5, Product = potatoes });
-
-        unitOfWork.CommitTransaction();
-    }
-    catch
-    {
-        unitOfWork.RollbackTransaction();
-    }
-
-
+    unitOfWork.CommitTransaction();
+}
+catch
+{
+    unitOfWork.RollbackTransaction();
 }
