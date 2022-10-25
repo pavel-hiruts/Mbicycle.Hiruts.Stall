@@ -1,6 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore;
-using Stall.DataAccess.Context;
+﻿using Stall.DataAccess.Context;
 using Stall.DataAccess.Model;
 using Stall.DataAccess.Repositories;
 using Stall.DataAccess.UnitOfWork;
@@ -8,9 +6,9 @@ using Stall.DataAccess.UnitOfWork;
 using (var context = new StallContext())
 {
 
-    var unitOfWork = new UnitOfWork(context);
-    var productRepo = new ProductRepository(context);
-    var saleRepo = new SaleRepository(context);
+    IUnitOfWork unitOfWork = new UnitOfWork(context);
+    IProductRepository productRepo = new ProductRepository(context);
+    ISaleRepository saleRepo = new SaleRepository(context);
 
     try
     {
