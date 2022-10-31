@@ -3,11 +3,11 @@ using Stall.DataAccess.Repositories;
 
 namespace Stall.BusinessLogic;
 
-public class AllSalesService : IAllSalesService
+public class SalesService : ISalesService
 {
     private readonly ISaleRepository _saleRepository;
 
-    public AllSalesService(ISaleRepository saleRepository)
+    public SalesService(ISaleRepository saleRepository)
     {
         _saleRepository = saleRepository ?? throw new ArgumentNullException(nameof(saleRepository));
     }
