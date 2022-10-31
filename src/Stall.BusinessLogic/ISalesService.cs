@@ -2,7 +2,7 @@ using Stall.BusinessLogic.Dtos;
 
 namespace Stall.BusinessLogic;
 
-internal interface IAllSalesService
+public interface ISalesService
 {
     IEnumerable<SaleDto> GetAllSales();
 }
