@@ -9,8 +9,10 @@ namespace Stall.BusinessLogic.Extensions
         public static void AddBusinessServices(this IServiceCollection services)
         {
             services.AddSingleton(new StallContext());
+            services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ISaleRepository, SaleRepository>();
-            services.AddScoped<ISalesService, SalesService>();
+            
+            //services.AddScoped<ISalesService, SalesService>();
         }
     }
 }

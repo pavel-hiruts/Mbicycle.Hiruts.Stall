@@ -1,4 +1,6 @@
+using MediatR;
 using Stall.BusinessLogic.Extensions;
+using Stall.BusinessLogic.Oueries;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddMediatR(typeof(GetAllSalesQuery).Assembly);
 
 var app = builder.Build();
 

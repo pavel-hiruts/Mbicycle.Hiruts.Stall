@@ -1,6 +1,7 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Stall.BusinessLogic;
-using Stall.BusinessLogic.Dtos;
+using Stall.BusinessLogic.Commands;
+using Stall.BusinessLogic.Oueries;
 
 namespace Stall.WebApi.Controllers
 {
@@ -8,17 +9,32 @@ namespace Stall.WebApi.Controllers
     [Route("api/sales")]
     public class SalesController : ControllerBase
     {
-        private readonly ISalesService _salesService;
+        private readonly IMediator _mediator;
 
-        public SalesController(ISalesService salesService)
+        public SalesController(IMediator mediator)
         {
-            _salesService = salesService ?? throw new ArgumentNullException(nameof(salesService));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         [HttpGet("all")]
-        public IEnumerable<SaleDto> Get()
+        public async Task<IActionResult> Get()
         {
-            return _salesService.GetAllSales();
+            var query = new GetAllSalesQuery();
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] AddSaleCommand command)
+        {
+            var result = await _mediator.Send(command);
+            
+            if (result.Error)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
         }
     }
 }
