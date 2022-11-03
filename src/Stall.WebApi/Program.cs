@@ -1,6 +1,6 @@
 using MediatR;
 using Stall.BusinessLogic.Extensions;
-using Stall.BusinessLogic.Oueries;
+using Stall.BusinessLogic.Queries;
 
 var builder = WebApplication.CreateBuilder(args);
 

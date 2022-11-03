@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Stall.BusinessLogic.Commands;
-using Stall.BusinessLogic.Oueries;
+using Stall.BusinessLogic.Queries;
 
 namespace Stall.WebApi.Controllers
 {

@@ -18,10 +18,10 @@ public class SaleRepository : Repository<Sale>, ISaleRepository
         return new Sale { Id = id };
     }
 
-    public override ICollection<Sale> Get()
+    public override async Task<ICollection<Sale>> GetAsync()
     {
-        return _context.Sales
+        return await _context.Sales
             .Include(x => x.Product)
-            .ToList();
+            .ToListAsync();
     }
 }

@@ -19,13 +19,13 @@ namespace Stall.BusinessLogic.Commands
             Price = price;
         }
 
-        public int ProductId { get; set; }
+        public int ProductId { get; }
 
-        public DateTime Date { get; set; }
+        public DateTime Date { get; }
 
-        public int Count { get; set; }
+        public int Count { get; }
 
-        public decimal Price { get; set; }
+        public decimal Price { get; }
     }
 
     public class AddSaleCommandHandler : IRequestHandler<AddSaleCommand, Result<int>>
@@ -38,17 +38,17 @@ namespace Stall.BusinessLogic.Commands
             IProductRepository productRepository,
             ISaleRepository saleRepository)
         {
-            _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository)); ;
+            _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
             _saleRepository = saleRepository ?? throw new ArgumentNullException(nameof(saleRepository)); ;
         }
 
-        public Task<Result<int>> Handle(AddSaleCommand command, CancellationToken cancellationToken)
+        public async Task<Result<int>> Handle(AddSaleCommand command, CancellationToken cancellationToken)
         {
-            var product = _productRepository.Get(command.ProductId);
+            var product = await _productRepository.GetAsync(command.ProductId);
 
             if (product.Id != command.ProductId)
             {
-                return Result.FailAsync<int>($"Could not find product with Id = '{command.ProductId}'");
+                return Result.Fail<int>($"Could not find product with Id = '{command.ProductId}'");
             }
 
             var newSale = new Sale()
@@ -59,9 +59,9 @@ namespace Stall.BusinessLogic.Commands
                 Count = command.Count,
             };
 
-            var result = _saleRepository.Add(newSale);
+            var result = await _saleRepository.AddAsync(newSale);
 
-            return Result.SuccessAsync(result.Id);
+            return Result.Success(result.Id);
         }
     }
 }

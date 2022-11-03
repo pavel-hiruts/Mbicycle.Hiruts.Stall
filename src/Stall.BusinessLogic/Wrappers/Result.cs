@@ -1,14 +1,12 @@
-﻿namespace Stall.BusinessLogic.Wrappers
+﻿using MediatR;
+
+namespace Stall.BusinessLogic.Wrappers
 {
     public static class Result
     {
         public static Result<T> Success<T>(T data, string message = default) => new(data, false, message);
 
         public static Result<T> Fail<T>(string message, T data = default) => new(data, true, message);
-
-        public static Task<Result<T>> SuccessAsync<T>(T data, string message = default) => Task.FromResult(new Result<T>(data, false, message));
-
-        public static Task<Result<T>> FailAsync<T>(string message, T data = default) => Task.FromResult(new Result<T>(data, true, message));
     }
 
     public class Result<T>
@@ -26,4 +24,8 @@
 
         public string Message { get; }
     }
+
+    public interface IRequestResult<TOut> : IRequest<Result<TOut>> { }
+
+    public interface IRequestHandlerRsult<TIn, TOut> : IRequestHandler<TIn, Result<TOut>> where TIn : IRequest<Result<TOut>> { }
 }
