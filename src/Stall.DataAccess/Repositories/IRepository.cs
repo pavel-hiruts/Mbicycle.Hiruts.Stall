@@ -1,5 +1,4 @@
 ﻿using Stall.DataAccess.Model.Base;
-using System.Threading.Tasks;
 
 namespace Stall.DataAccess.Repositories;
 

@@ -1,15 +1,15 @@
 ﻿using MediatR;
 using Stall.BusinessLogic.Dtos;
-using Stall.BusinessLogic.Wrappers;
+using Stall.BusinessLogic.Wrappers.Result;
 using Stall.DataAccess.Repositories;
 
-namespace Stall.BusinessLogic.Queries
+namespace Stall.BusinessLogic.Handlers.Queries
 {
-    public class GetAllSalesQuery : IRequest<Result<IEnumerable<SaleDto>>>
+    public class GetAllSalesQuery : IRequestResult<IEnumerable<SaleDto>>
     {
     }
 
-    public class GetAllSalesQueryHandler : IRequestHandler<GetAllSalesQuery, Result<IEnumerable<SaleDto>>>
+    public class GetAllSalesQueryHandler : IRequestHandlerResult<GetAllSalesQuery, IEnumerable<SaleDto>>
     {
         private readonly ISaleRepository _saleRepository;
 

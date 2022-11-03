@@ -1,11 +1,10 @@
-﻿using MediatR;
-using Stall.BusinessLogic.Wrappers;
+﻿using Stall.BusinessLogic.Wrappers.Result;
 using Stall.DataAccess.Model;
 using Stall.DataAccess.Repositories;
 
-namespace Stall.BusinessLogic.Commands
+namespace Stall.BusinessLogic.Handlers.Commands
 {
-    public class AddSaleCommand : IRequest<Result<int>>
+    public class AddSaleCommand : IRequestResult<int>
     {
         public AddSaleCommand(
             int productId, 
@@ -28,7 +27,7 @@ namespace Stall.BusinessLogic.Commands
         public decimal Price { get; }
     }
 
-    public class AddSaleCommandHandler : IRequestHandler<AddSaleCommand, Result<int>>
+    public class AddSaleCommandHandler : IRequestHandlerResult<AddSaleCommand, int>
     {
         private readonly IProductRepository _productRepository;
 
@@ -51,7 +50,7 @@ namespace Stall.BusinessLogic.Commands
                 return Result.Fail<int>($"Could not find product with Id = '{command.ProductId}'");
             }
 
-            var newSale = new Sale()
+            var newSale = new Sale
             {
                 Product = product,
                 Date = command.Date,

@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace Stall.BusinessLogic.Wrappers
+﻿namespace Stall.BusinessLogic.Wrappers.Result
 {
     public static class Result
     {
@@ -25,7 +23,5 @@ namespace Stall.BusinessLogic.Wrappers
         public string Message { get; }
     }
 
-    public interface IRequestResult<TOut> : IRequest<Result<TOut>> { }
-
-    public interface IRequestHandlerRsult<TIn, TOut> : IRequestHandler<TIn, Result<TOut>> where TIn : IRequest<Result<TOut>> { }
+    
 }
