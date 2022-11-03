@@ -33,7 +33,7 @@ public abstract class Repository<T> : IRepository<T> where T : Entity
         await DeleteAsync(item);
     }
 
-    virtual public async Task<ICollection<T>> GetAsync()
+    public virtual async Task<ICollection<T>> GetAsync()
     {
         return await _context.Set<T>().ToListAsync();
     }

@@ -1,10 +1,8 @@
 namespace Stall.BusinessLogic.Dtos;
 
-public class SaleDto
+public class SalesDashboardDto
 {
-    public int SaleId { get; set; }
-
-    public int ProductId { get; set; }
+    public int Id { get; set; }
 
     public string ProductName { get; set; }
 

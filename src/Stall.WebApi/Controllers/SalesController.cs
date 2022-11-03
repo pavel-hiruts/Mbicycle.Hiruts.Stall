@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Stall.BusinessLogic.Handlers.Commands;
 using Stall.BusinessLogic.Handlers.Queries;
@@ -24,6 +25,14 @@ namespace Stall.WebApi.Controllers
             return Ok(result);
         }
 
+        [HttpGet("dashboard/all")]
+        public async Task<IActionResult> GetForDashboard()
+        {
+            var query = new GetAllSalesDashboardQuery();
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+        
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] AddSaleCommand command)
         {
@@ -34,7 +43,7 @@ namespace Stall.WebApi.Controllers
                 return BadRequest(result);
             }
 
-            return Ok(result);
+            return Created(HttpContext.Request.GetDisplayUrl(), result);
         }
     }
 }

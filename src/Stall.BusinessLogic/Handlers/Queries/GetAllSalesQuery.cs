@@ -20,18 +20,18 @@ namespace Stall.BusinessLogic.Handlers.Queries
 
         async Task<Result<IEnumerable<SaleDto>>> IRequestHandler<GetAllSalesQuery, Result<IEnumerable<SaleDto>>>.Handle(GetAllSalesQuery request, CancellationToken cancellationToken)
         {
-            var result = (await _saleRepository.GetAsync())
-                .Select(sale =>
-                    new SaleDto
-                    {
-                        Id = sale.Id,
-                        Date = sale.Date,
-                        ProductName = sale.Product.Name,
-                        Count = sale.Count,
-                        Price = sale.Price,
-                    });
+            var data = (await _saleRepository.GetAsync())
+                .Select(sale => new SaleDto
+                {
+                    SaleId = sale.Id,
+                    Date = sale.Date,
+                    ProductId = sale.Product.Id,
+                    ProductName = sale.Product.Name,
+                    Count = sale.Count,
+                    Price = sale.Price,
+                });
 
-            return Result.Success(result);
+            return Result.Success(data);
         }
     }
 }

@@ -19,14 +19,14 @@ namespace Stall.BusinessLogic.Handlers.Queries
 
         public async Task<Result<IEnumerable<ProductDto>>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
         {
-            var result = (await _productRepository.GetAsync())
+            var data = (await _productRepository.GetAsync())
                 .Select(p => new ProductDto
                 {
                     Id = p.Id,
                     Name = p.Name,
                 });
 
-            return Result.Success(result);
+            return Result.Success(data);
         }
     }
 }

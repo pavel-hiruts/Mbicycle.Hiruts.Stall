@@ -1,5 +1,4 @@
 ﻿using Stall.BusinessLogic.Wrappers.Result;
-using Stall.DataAccess.Model;
 using Stall.DataAccess.Repositories;
 
 namespace Stall.BusinessLogic.Handlers.Commands
@@ -43,24 +42,21 @@ namespace Stall.BusinessLogic.Handlers.Commands
 
         public async Task<Result<int>> Handle(AddSaleCommand command, CancellationToken cancellationToken)
         {
-            var product = await _productRepository.GetAsync(command.ProductId);
-
-            if (product.Id != command.ProductId)
+            var productExist = await _productRepository.ExistById(command.ProductId);
+            
+            if (!productExist)
             {
                 return Result.Fail<int>($"Could not find product with Id = '{command.ProductId}'");
             }
 
-            var newSale = new Sale
-            {
-                Product = product,
-                Date = command.Date,
-                Price = command.Price,
-                Count = command.Count,
-            };
+            var data = await _saleRepository
+                .AddAsync(
+                command.ProductId, 
+                command.Date, 
+                command.Count, 
+                command.Price);
 
-            var result = await _saleRepository.AddAsync(newSale);
-
-            return Result.Success(result.Id);
+            return Result.Success(data);
         }
     }
 }
