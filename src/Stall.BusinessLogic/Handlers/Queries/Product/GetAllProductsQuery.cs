@@ -1,8 +1,8 @@
 ﻿using Stall.BusinessLogic.Dtos;
 using Stall.BusinessLogic.Wrappers.Result;
-using Stall.DataAccess.Repositories;
+using Stall.DataAccess.Repositories.Product;
 
-namespace Stall.BusinessLogic.Handlers.Queries
+namespace Stall.BusinessLogic.Handlers.Queries.Product
 {
     public class GetAllProductsQuery : IRequestResult<IEnumerable<ProductDto>>
     {

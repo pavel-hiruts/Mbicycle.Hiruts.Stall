@@ -1,8 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Stall.BusinessLogic.Handlers.Commands;
-using Stall.BusinessLogic.Handlers.Queries;
+using Stall.BusinessLogic.Handlers.Commands.Sale;
+using Stall.BusinessLogic.Handlers.Queries.Sale;
 
 namespace Stall.WebApi.Controllers
 {
@@ -38,12 +38,37 @@ namespace Stall.WebApi.Controllers
         {
             var result = await _mediator.Send(command);
             
-            if (result.Error)
+            if (!result.Success)
             {
                 return BadRequest(result);
             }
 
             return Created(HttpContext.Request.GetDisplayUrl(), result);
+        }
+        
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] UpdateSaleCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+            
+            return Ok(result);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var command = new DeleteSaleCommand {SaleId = id};
+            var result = await _mediator.Send(command);
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
         }
     }
 }

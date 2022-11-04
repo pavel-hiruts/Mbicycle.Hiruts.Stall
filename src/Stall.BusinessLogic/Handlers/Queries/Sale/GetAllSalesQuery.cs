@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Stall.BusinessLogic.Dtos;
 using Stall.BusinessLogic.Wrappers.Result;
-using Stall.DataAccess.Repositories;
+using Stall.DataAccess.Repositories.Sale;
 
-namespace Stall.BusinessLogic.Handlers.Queries
+namespace Stall.BusinessLogic.Handlers.Queries.Sale
 {
     public class GetAllSalesQuery : IRequestResult<IEnumerable<SaleDto>>
     {

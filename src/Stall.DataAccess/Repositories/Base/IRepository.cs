@@ -1,6 +1,6 @@
 ﻿using Stall.DataAccess.Model.Base;
 
-namespace Stall.DataAccess.Repositories;
+namespace Stall.DataAccess.Repositories.Base;
 
 public interface IRepository<T> where T : Entity
 {
