@@ -1,6 +1,6 @@
 ﻿using Stall.DataAccess.Repositories.Base;
 
-namespace Stall.DataAccess.Repositories.Product;
+namespace Stall.DataAccess.Repositories;
 
 public interface IProductRepository : IRepository<Model.Product>
 {

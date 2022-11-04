@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Stall.DataAccess.Context;
+using Stall.DataAccess.Model;
 using Stall.DataAccess.Repositories.Base;
 
-namespace Stall.DataAccess.Repositories.Product;
+namespace Stall.DataAccess.Repositories;
 
-public class ProductRepository : Repository<Model.Product>, IProductRepository
+public class ProductRepository : Repository<Product>, IProductRepository
 {
     private readonly StallContext _context;
 
@@ -13,14 +14,14 @@ public class ProductRepository : Repository<Model.Product>, IProductRepository
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
-    protected override Model.Product CreateEntity(int id)
+    protected override Product CreateEntity(int id)
     {
-        return new Model.Product { Id = id };
+        return new Product { Id = id };
     }
 
     public async Task<int> AddAsync(string name)
     {
-        var entity = new Model.Product {Name = name};
+        var entity = new Product {Name = name};
         var result = await AddAsync(entity);
         return result.Id;
     }
@@ -39,7 +40,7 @@ public class ProductRepository : Repository<Model.Product>, IProductRepository
 
     public async Task<int> UpdateAsync(int id, string name)
     {
-        var product = new Model.Product {Id = id, Name = name};
+        var product = new Product {Id = id, Name = name};
         _context.ChangeTracker.Clear();
         _context.Attach(product);
         await UpdateAsync(product);

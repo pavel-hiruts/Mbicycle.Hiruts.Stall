@@ -1,6 +1,6 @@
-﻿using Stall.BusinessLogic.Dtos;
+﻿using Stall.BusinessLogic.Handlers.Queries.Dtos;
 using Stall.BusinessLogic.Wrappers.Result;
-using Stall.DataAccess.Repositories.Product;
+using Stall.DataAccess.Repositories;
 
 namespace Stall.BusinessLogic.Handlers.Queries.Product;
 

@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Stall.DataAccess.Context;
+using Stall.DataAccess.Model;
 using Stall.DataAccess.Repositories.Base;
 
-namespace Stall.DataAccess.Repositories.Sale;
+namespace Stall.DataAccess.Repositories;
 
-public class SaleRepository : Repository<Model.Sale>, ISaleRepository
+public class SaleRepository : Repository<Sale>, ISaleRepository
 {
     private readonly StallContext _context;
 
@@ -13,15 +14,15 @@ public class SaleRepository : Repository<Model.Sale>, ISaleRepository
         _context = context;
     }
 
-    protected override Model.Sale CreateEntity(int id)
+    protected override Sale CreateEntity(int id)
     {
-        return new Model.Sale { Id = id };
+        return new Sale { Id = id };
     }
 
-    public override async Task<ICollection<Model.Sale>> GetAsync()
+    public override async Task<ICollection<Sale>> GetAsync()
     {
         var query = _context.Sales
-            .Select(x => new Model.Sale
+            .Select(x => new Sale
             {
                 Id = x.Id,
                 Product = x.Product,
@@ -35,13 +36,13 @@ public class SaleRepository : Repository<Model.Sale>, ISaleRepository
         return result;
     }
     
-    public async Task<ICollection<Model.Sale>> GetAllSalesDashboardAsync()
+    public async Task<ICollection<Sale>> GetAllSalesDashboardAsync()
     {
         var query = _context.Sales
-            .Select(x => new Model.Sale
+            .Select(x => new Sale
             {
                 Id = x.Id,
-                Product = new Model.Product
+                Product = new Product
                 {
                     Name = x.Product.Name,
                 },
@@ -61,9 +62,9 @@ public class SaleRepository : Repository<Model.Sale>, ISaleRepository
         int count, 
         decimal price)
     {
-        var sale = new Model.Sale
+        var sale = new Sale
         {
-            Product = new Model.Product {Id = productId},
+            Product = new Product {Id = productId},
             Date = date,
             Price = price,
             Count = count,
@@ -90,10 +91,10 @@ public class SaleRepository : Repository<Model.Sale>, ISaleRepository
         int count, 
         decimal price)
     {
-        var sale = new Model.Sale
+        var sale = new Sale
         {
             Id = saleId,
-            Product = new Model.Product {Id = productId},
+            Product = new Product {Id = productId},
             Date = date,
             Price = price,
             Count = count,

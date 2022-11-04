@@ -1,6 +1,6 @@
 ﻿using Stall.DataAccess.Repositories.Base;
 
-namespace Stall.DataAccess.Repositories.Sale;
+namespace Stall.DataAccess.Repositories;
 
 public interface ISaleRepository : IRepository<Model.Sale>
 {

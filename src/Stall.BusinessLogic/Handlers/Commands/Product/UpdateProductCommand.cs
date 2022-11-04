@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Stall.BusinessLogic.Extensions;
 using Stall.BusinessLogic.Wrappers.Result;
-using Stall.DataAccess.Repositories.Product;
+using Stall.DataAccess.Repositories;
 
 namespace Stall.BusinessLogic.Handlers.Commands.Product;
 

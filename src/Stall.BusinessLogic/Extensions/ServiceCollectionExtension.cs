@@ -4,8 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Stall.BusinessLogic.Handlers.Commands.Product;
 using Stall.BusinessLogic.Handlers.Commands.Sale;
 using Stall.DataAccess.Context;
-using Stall.DataAccess.Repositories.Product;
-using Stall.DataAccess.Repositories.Sale;
+using Stall.DataAccess.Repositories;
 
 namespace Stall.BusinessLogic.Extensions;
 
