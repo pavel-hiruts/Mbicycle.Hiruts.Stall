@@ -1,9 +1,8 @@
-﻿namespace Stall.BusinessLogic.Dtos
-{
-    public class ProductDto
-    {
-        public int Id { get; set; }
+﻿namespace Stall.BusinessLogic.Dtos;
 
-        public string Name { get; set; }
-    }
+public class ProductDto
+{
+    public int Id { get; set; }
+
+    public string Name { get; set; }
 }

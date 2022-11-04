@@ -2,31 +2,30 @@
 using Stall.BusinessLogic.Wrappers.Result;
 using Stall.DataAccess.Repositories.Product;
 
-namespace Stall.BusinessLogic.Handlers.Queries.Product
+namespace Stall.BusinessLogic.Handlers.Queries.Product;
+
+public class GetAllProductsQuery : IRequestResult<IEnumerable<ProductDto>>
 {
-    public class GetAllProductsQuery : IRequestResult<IEnumerable<ProductDto>>
+}
+
+public class GetAllProductsQueryHandler : IRequestHandlerResult<GetAllProductsQuery, IEnumerable<ProductDto>>
+{
+    private readonly IProductRepository _productRepository;
+
+    public GetAllProductsQueryHandler(IProductRepository productRepository)
     {
+        _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
     }
 
-    public class GetAllProductsQueryHandler : IRequestHandlerResult<GetAllProductsQuery, IEnumerable<ProductDto>>
+    public async Task<Result<IEnumerable<ProductDto>>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
     {
-        private readonly IProductRepository _productRepository;
+        var data = (await _productRepository.GetAsync())
+            .Select(p => new ProductDto
+            {
+                Id = p.Id,
+                Name = p.Name,
+            });
 
-        public GetAllProductsQueryHandler(IProductRepository productRepository)
-        {
-            _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
-        }
-
-        public async Task<Result<IEnumerable<ProductDto>>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
-        {
-            var data = (await _productRepository.GetAsync())
-                .Select(p => new ProductDto
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                });
-
-            return Result.Success(data);
-        }
+        return Result.Success(data);
     }
 }
