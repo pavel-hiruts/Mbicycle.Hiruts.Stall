@@ -6,14 +6,19 @@ using Stall.AuthApi.InputModels;
 namespace Stall.AuthApi.Controllers;
 
 [ApiController]
-[Route("api/users")]
+[Route("auth/api/user")]
 public class UserController : ControllerBase
 {
     private readonly UserManager<User> _userManager;
     
-    public UserController(UserManager<User> userManager)
+    private readonly RoleManager<Role> _roleManager;
+    
+    public UserController(
+        UserManager<User> userManager, 
+        RoleManager<Role> roleManager)
     {
         _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+        _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
     }
 
     [HttpPost("create")]
@@ -28,4 +33,29 @@ public class UserController : ControllerBase
         
         return CreatedAtAction("Post", new { id = user.Id }, user.UserName);
     }
+
+    [HttpPut("{userId:int}/to/role/{roleId:int}")]
+    public async Task<IActionResult> AddToRole(int userId, int roleId)
+    {
+        var user = await _userManager.FindByIdAsync($"{userId}");
+        if (user == null)
+        {
+            return NotFound($"Could not found user with id = {userId}");
+        }
+        
+        var role = await _roleManager.FindByIdAsync($"{roleId}");
+        if (role == null)
+        {
+            return NotFound($"Could not found role with id = {roleId}");
+        }
+
+        var result = await _userManager.AddToRoleAsync(user, role.Name);
+        if (!result.Succeeded)
+        {
+            return BadRequest(result);
+        }
+        
+        return Ok();
+    }
+    
 }

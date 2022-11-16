@@ -8,8 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton(new IdentityContext());
 
-builder.Services.AddIdentity<User, Role>(
-options =>
+builder.Services.AddIdentity<User, Role>(options =>
 {
     options.Password.RequiredLength = 5;
     options.Password.RequireNonAlphanumeric = false;

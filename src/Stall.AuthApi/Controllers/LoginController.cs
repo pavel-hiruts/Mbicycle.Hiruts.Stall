@@ -10,14 +10,14 @@ using Stall.AuthApi.InputModels;
 namespace Stall.AuthApi.Controllers;
 
 [ApiController]
-[Route("api/jwt")]
-public class JwtController : ControllerBase
+[Route("auth/api/login")]
+public class LoginController : ControllerBase
 {
     private readonly UserManager<User> _userManager;
     
     private readonly SignInManager<User> _signInManager;
     
-    public JwtController(
+    public LoginController(
         UserManager<User> userManager, 
         SignInManager<User> signInManager)
     {
@@ -25,8 +25,8 @@ public class JwtController : ControllerBase
         _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
     }
     
-    [HttpPost("get")]
-    public async Task<IActionResult> Post(GetJwtTokenInputModel input)
+    [HttpPost]
+    public async Task<IActionResult> Login(LoginInputModel input)
     {
         var user = await _userManager.FindByNameAsync(input.Name);
         if (user == null)
@@ -50,11 +50,12 @@ public class JwtController : ControllerBase
         
         var claims = new List<Claim>
         {
-            new (ClaimsIdentity.DefaultNameClaimType, user.UserName)
+            new (ClaimTypes.Sid, $"{user.Id}"),
+            new (ClaimTypes.Name, user.UserName)
         };
 
-        var roles = (await _userManager.GetRolesAsync(user));
-        claims.AddRange(roles.Select(role => new Claim(ClaimsIdentity.DefaultRoleClaimType, role)));
+        var roles = await _userManager.GetRolesAsync(user);
+        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
         
         var jwt = new JwtSecurityToken(
             issuer: "some issuer",
