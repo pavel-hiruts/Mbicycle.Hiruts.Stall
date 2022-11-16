@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Stall.DataAccess.Context;
 using Stall.DataAccess.Model;
+using Stall.DataAccess.Repositories.Base;
 
 namespace Stall.DataAccess.Repositories;
 
@@ -69,10 +70,41 @@ public class SaleRepository : Repository<Sale>, ISaleRepository
             Count = count,
         };
        
+        _context.ChangeTracker.Clear();
         _context.Attach(sale.Product);
         var result = await AddAsync(sale);
-        _context.Entry(sale.Product).State = EntityState.Detached;
+        _context.ChangeTracker.Clear();
         
         return result.Id;
+    }
+
+    public async Task<bool> ExistById(int id)
+    {
+        var result = await _context.Sales.CountAsync(x => x.Id == id);
+        return result == 1;
+    }
+
+    public async Task<int> UpdateAsync(
+        int saleId, 
+        int productId, 
+        DateTime date, 
+        int count, 
+        decimal price)
+    {
+        var sale = new Sale
+        {
+            Id = saleId,
+            Product = new Product {Id = productId},
+            Date = date,
+            Price = price,
+            Count = count,
+        };
+       
+        _context.ChangeTracker.Clear();
+        _context.Attach(sale);
+        await UpdateAsync(sale);
+        _context.ChangeTracker.Clear();
+        
+        return saleId;
     }
 }

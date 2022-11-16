@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Stall.DataAccess.Model.Base;
 
-namespace Stall.DataAccess.Repositories;
+namespace Stall.DataAccess.Repositories.Base;
 
 public abstract class Repository<T> : IRepository<T> where T : Entity
 {
@@ -29,8 +29,10 @@ public abstract class Repository<T> : IRepository<T> where T : Entity
     public async Task DeleteAsync(int id)
     {
         var item = CreateEntity(id);
-        _context.Set<T>().Attach(item);
+        _context.ChangeTracker.Clear();
+        _context.Attach(item);
         await DeleteAsync(item);
+        _context.ChangeTracker.Clear();
     }
 
     public virtual async Task<ICollection<T>> GetAsync()

@@ -1,4 +1,4 @@
-namespace Stall.BusinessLogic.Dtos;
+namespace Stall.BusinessLogic.Handlers.Queries.Dtos;
 
 public class SalesDashboardDto
 {
