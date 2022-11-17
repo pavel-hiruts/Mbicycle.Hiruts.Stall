@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Stall.DataAccess.Model.Base;
+using Stall.DataAccess.Model.Domain.Base;
 
 namespace Stall.DataAccess.Repositories.Base;
 

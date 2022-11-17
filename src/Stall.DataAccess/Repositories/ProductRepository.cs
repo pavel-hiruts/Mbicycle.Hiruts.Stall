@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Stall.DataAccess.Context;
 using Stall.DataAccess.Model;
+using Stall.DataAccess.Model.Domain;
+using Stall.DataAccess.Model.Identity;
 using Stall.DataAccess.Repositories.Base;
 
 namespace Stall.DataAccess.Repositories;
@@ -19,10 +21,19 @@ public class ProductRepository : Repository<Product>, IProductRepository
         return new Product { Id = id };
     }
 
-    public async Task<int> AddAsync(string name)
+    public async Task<int> AddAsync(string name, int createdBy)
     {
-        var entity = new Product {Name = name};
-        var result = await AddAsync(entity);
+        var product = new Product
+        {
+            Name = name,
+            CreatedBy = new User {Id = createdBy}
+        };
+        
+        _context.ChangeTracker.Clear();
+        _context.Attach(product.CreatedBy);
+        var result = await AddAsync(product);
+        _context.ChangeTracker.Clear();
+        
         return result.Id;
     }
 
@@ -38,9 +49,14 @@ public class ProductRepository : Repository<Product>, IProductRepository
         return result > 0;
     }
 
-    public async Task<int> UpdateAsync(int id, string name)
+    public async Task<int> UpdateAsync(int id, string name, int updatedBy)
     {
-        var product = new Product {Id = id, Name = name};
+        var product = new Product
+        {
+            Id = id, 
+            Name = name,
+            UpdatedBy = new User{Id = updatedBy}
+        };
         _context.ChangeTracker.Clear();
         _context.Attach(product);
         await UpdateAsync(product);

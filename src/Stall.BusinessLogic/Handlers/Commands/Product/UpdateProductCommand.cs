@@ -1,14 +1,16 @@
 ﻿using FluentValidation;
 using Stall.BusinessLogic.Extensions;
+using Stall.BusinessLogic.Handlers.Commands.Base;
 using Stall.BusinessLogic.Wrappers.Result;
 using Stall.DataAccess.Repositories;
 
 namespace Stall.BusinessLogic.Handlers.Commands.Product;
 
-public class UpdateProductCommand : IRequestResult<int>
+public class UpdateProductCommand : IRequestResult<int>, IUpdateCommand
 {
     public int  ProductId { get; set; }
     public string ProductName { get; set; }
+    public int UpdatedBy { get; set; }
 }
 
 public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
@@ -57,7 +59,8 @@ public class UpdateProductCommandHandler : IRequestHandlerResult<UpdateProductCo
 
         var data = await _productRepository.UpdateAsync(
             command.ProductId, 
-            command.ProductName);
+            command.ProductName,
+            command.UpdatedBy);
         
         return Result.Success(data);
     }

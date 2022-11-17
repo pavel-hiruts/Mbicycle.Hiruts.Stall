@@ -4,8 +4,8 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Stall.AuthApi.Domain;
 using Stall.AuthApi.InputModels;
+using Stall.DataAccess.Model.Identity;
 
 namespace Stall.AuthApi.Controllers;
 

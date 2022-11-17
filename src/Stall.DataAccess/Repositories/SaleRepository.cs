@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Stall.DataAccess.Context;
 using Stall.DataAccess.Model;
+using Stall.DataAccess.Model.Domain;
+using Stall.DataAccess.Model.Identity;
 using Stall.DataAccess.Repositories.Base;
 
 namespace Stall.DataAccess.Repositories;
@@ -56,11 +58,11 @@ public class SaleRepository : Repository<Sale>, ISaleRepository
         return result;
     }
 
-    public async Task<int> AddAsync(
-        int productId, 
-        DateTime date, 
-        int count, 
-        decimal price)
+    public async Task<int> AddAsync(int productId,
+        DateTime date,
+        int count,
+        decimal price, 
+        int createdBy)
     {
         var sale = new Sale
         {
@@ -68,10 +70,12 @@ public class SaleRepository : Repository<Sale>, ISaleRepository
             Date = date,
             Price = price,
             Count = count,
+            CreatedBy = new User {Id = createdBy}
         };
        
         _context.ChangeTracker.Clear();
         _context.Attach(sale.Product);
+        _context.Attach(sale.CreatedBy);
         var result = await AddAsync(sale);
         _context.ChangeTracker.Clear();
         
@@ -84,12 +88,12 @@ public class SaleRepository : Repository<Sale>, ISaleRepository
         return result == 1;
     }
 
-    public async Task<int> UpdateAsync(
-        int saleId, 
-        int productId, 
-        DateTime date, 
-        int count, 
-        decimal price)
+    public async Task<int> UpdateAsync(int saleId,
+        int productId,
+        DateTime date,
+        int count,
+        decimal price, 
+        int updatedBy)
     {
         var sale = new Sale
         {
@@ -98,6 +102,7 @@ public class SaleRepository : Repository<Sale>, ISaleRepository
             Date = date,
             Price = price,
             Count = count,
+            UpdatedBy = new User {Id = updatedBy},
         };
        
         _context.ChangeTracker.Clear();

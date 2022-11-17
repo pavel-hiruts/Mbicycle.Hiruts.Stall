@@ -1,12 +1,11 @@
-using Microsoft.AspNetCore.Identity;
-using Stall.AuthApi.Context;
-using Stall.AuthApi.Domain;
+using Stall.DataAccess.Context;
+using Stall.DataAccess.Model.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddSingleton(new IdentityContext());
+builder.Services.AddSingleton(new StallContext());
 
 builder.Services.AddIdentity<User, Role>(options =>
 {
@@ -15,7 +14,7 @@ builder.Services.AddIdentity<User, Role>(options =>
     options.Password.RequireLowercase = false;
     options.Password.RequireUppercase = false;
     options.Password.RequireDigit = false;
-}).AddEntityFrameworkStores<IdentityContext>();
+}).AddEntityFrameworkStores<StallContext>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

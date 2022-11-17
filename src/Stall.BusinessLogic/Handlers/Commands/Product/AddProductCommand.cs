@@ -1,13 +1,15 @@
 ﻿using FluentValidation;
 using Stall.BusinessLogic.Extensions;
+using Stall.BusinessLogic.Handlers.Commands.Base;
 using Stall.BusinessLogic.Wrappers.Result;
 using Stall.DataAccess.Repositories;
 
 namespace Stall.BusinessLogic.Handlers.Commands.Product;
 
-public class AddProductCommand : IRequestResult<int>
+public class AddProductCommand : IRequestResult<int>, ICreateCommand
 {
     public string ProductName { get; set; }
+    public int CreatedBy { get; set; }
 }
 
 public class AddProductCommandValidator : AbstractValidator<AddProductCommand>
@@ -49,7 +51,9 @@ public class AddProductCommandHandler : IRequestHandlerResult<AddProductCommand,
             return Result.Fail<int>($@"Could not add product with name '{command.ProductName}' which is already exists");
         }
 
-        var data = await _productRepository.AddAsync(command.ProductName);
+        var data = await _productRepository.AddAsync(
+            command.ProductName,
+            command.CreatedBy);
         
         return Result.Success(data);
     }

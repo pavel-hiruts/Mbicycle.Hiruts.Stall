@@ -1,10 +1,13 @@
 using MediatR;
 using Stall.BusinessLogic.Extensions;
 using Stall.BusinessLogic.Handlers.Queries.Sale;
+using Stall.WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(MediatorCommandsPipe<,>));
+
 builder.Services.AddBusinessServices();
 
 builder.Services.AddControllers();

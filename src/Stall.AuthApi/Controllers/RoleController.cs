@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Stall.AuthApi.Domain;
 using Stall.AuthApi.InputModels;
+using Stall.DataAccess.Model.Identity;
 
 namespace Stall.AuthApi.Controllers;
 

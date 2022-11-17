@@ -1,11 +1,12 @@
 ﻿using FluentValidation;
 using Stall.BusinessLogic.Extensions;
+using Stall.BusinessLogic.Handlers.Commands.Base;
 using Stall.BusinessLogic.Wrappers.Result;
 using Stall.DataAccess.Repositories;
 
 namespace Stall.BusinessLogic.Handlers.Commands.Sale;
 
-public class UpdateSaleCommand : IRequestResult<int>
+public class UpdateSaleCommand : IRequestResult<int>, IUpdateCommand
 {
     public UpdateSaleCommand(
         int saleId,
@@ -30,6 +31,8 @@ public class UpdateSaleCommand : IRequestResult<int>
     public int Count { get; }
 
     public decimal Price { get; }
+    
+    public int UpdatedBy { get; set; }
 }
 
 public class UpdateSaleCommandValidator : AbstractValidator<UpdateSaleCommand>
@@ -92,7 +95,8 @@ public class UpdateSaleCommandHandler : IRequestHandlerResult<UpdateSaleCommand,
             command.ProductId,
             command.Date,
             command.Count,
-            command.Price);
+            command.Price,
+            command.UpdatedBy);
         
         return Result.Success(data);
     }

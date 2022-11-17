@@ -1,6 +1,8 @@
-﻿namespace Stall.DataAccess.Model;
+﻿using Stall.DataAccess.Model.Domain.Base;
 
-public class Sale : Base.Entity
+namespace Stall.DataAccess.Model.Domain;
+
+public class Sale : Entity
 {
     public DateTime Date { get; set; }
 
@@ -9,5 +11,4 @@ public class Sale : Base.Entity
     public decimal Price { get; set; }
 
     public int Count { get; set; }
-
 }
