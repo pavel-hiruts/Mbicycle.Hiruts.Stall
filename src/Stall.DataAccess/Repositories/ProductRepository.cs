@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Stall.DataAccess.Context;
-using Stall.DataAccess.Model;
 using Stall.DataAccess.Model.Domain;
 using Stall.DataAccess.Model.Identity;
 using Stall.DataAccess.Repositories.Base;
@@ -51,16 +50,15 @@ public class ProductRepository : Repository<Product>, IProductRepository
 
     public async Task<int> UpdateAsync(int id, string name, int updatedBy)
     {
-        var product = new Product
-        {
-            Id = id, 
-            Name = name,
-            UpdatedBy = new User{Id = updatedBy}
-        };
+        var product = await GetAsync(id);
+        product.Name = name;
+        product.UpdatedBy = new User{Id = updatedBy};
+        
         _context.ChangeTracker.Clear();
         _context.Attach(product);
         await UpdateAsync(product);
         _context.ChangeTracker.Clear();
+        
         return id;
     }
 }

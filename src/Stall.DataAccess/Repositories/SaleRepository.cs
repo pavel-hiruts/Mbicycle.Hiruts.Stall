@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Stall.DataAccess.Context;
-using Stall.DataAccess.Model;
 using Stall.DataAccess.Model.Domain;
 using Stall.DataAccess.Model.Identity;
 using Stall.DataAccess.Repositories.Base;
@@ -95,15 +94,12 @@ public class SaleRepository : Repository<Sale>, ISaleRepository
         decimal price, 
         int updatedBy)
     {
-        var sale = new Sale
-        {
-            Id = saleId,
-            Product = new Product {Id = productId},
-            Date = date,
-            Price = price,
-            Count = count,
-            UpdatedBy = new User {Id = updatedBy},
-        };
+        var sale = await GetAsync(saleId);
+        sale.Product = new Product {Id = productId};
+        sale.Date = date;
+        sale.Price = price;
+        sale.Count = count;
+        sale.UpdatedBy = new User {Id = updatedBy};        
        
         _context.ChangeTracker.Clear();
         _context.Attach(sale);
